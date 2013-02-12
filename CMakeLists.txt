@@ -4,7 +4,8 @@ project(argus_perception)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS april_tags_node opencv2 usb_cam)
+#find_package(catkin REQUIRED COMPONENTS april_tags_node opencv2 usb_cam)
+find_package(catkin REQUIRED COMPONENTS opencv2)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
