@@ -1,0 +1,35 @@
+<launch>
+  <node pkg="april_tags_node" type="execute" name="april_tags_publishers" args=" april.ros.TagPublisher">
+
+    <!-- Detector parameters (default values placed into launch file) -->
+    <param name="seg_sigma" value="0.8" />
+    <param name="sigma" value="0.0" />
+    <param name="min_mag" value="0.004" />
+    <param name="max_edge_cost" value="0.5235987755982988" />
+    <param name="mag_thresh" value="1200.0" />
+    <param name="theta_thresh" value="100.0" />
+    <param name="error_bits" value="1" />
+    <param name="weight_scale" value="100" />
+    <param name="seg_decimate" value="false" />
+    <param name="debug" value="true" />
+
+    <!-- Detector tag information -->
+    <param name="tag_family" value="april.tag.Tag16h5" />
+    <param name="tag_size" value="0.1755" />
+
+    <!-- Camera Information -->
+    <param name="use_camera_info" value="false" />
+    <!--    <param name="focal_length_x" value="485.6" /> -->
+    <!--    <param name="focal_length_y" value="485.6" /> -->
+
+    <!-- Supplementary information publication -->
+    <param name="publish_visualization" value="true" />
+    <param name="broadcast_tf" value="true" />
+    <param name="tag_vis_magnification" value="2.0" />
+
+     <remap from="image_raw" to="/usb_cam/image_raw" />
+     <!-- <remap from="" to="/gscam/image_raw" /> -->
+
+  </node>
+</launch>
+
