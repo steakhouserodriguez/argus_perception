@@ -7,6 +7,9 @@
 
 from numpy import *
 from numpy.random import *
+import sys
+sys.path.append("..")
+from plotter import *
 
 class ParticleFilter:
     # TODO: Generic transition and emission models
@@ -16,11 +19,14 @@ class ParticleFilter:
 
         # list of (x,y) particle positions.
         self.particles = ones((num_particles,2), int) * pos     # Initial position
+        self.pos = pos
+        self.num_particles = num_particles
 
         # weights
         self.w = ones(num_particles)/num_particles
         self.ss = stepsize
         self.bounds = bounds
+        self.plot = SimplePlot()
 
     def observe(self, observation):
         # TODO: better emission model
@@ -28,11 +34,19 @@ class ParticleFilter:
         # Weight = frame difference, directly from pipeline
         self.w = observation[tuple(self.particles.T)]
 
+        maxMovement = amax(observation)
+
         # Normalize w
         self.w /= sum(self.w)
 
-        # TODO: better resampling condition
-        if 1./sum(self.w**2) < self.num_particles/10.:           # Resample if particles degenerate
+        # plots the max movement
+        self.plot.addPoint(maxMovement)
+        # TODO: better resampling condition.
+        # This ignores the situation where the bird is in motion
+        # but the particles aren't converged on the bird.
+
+        # Resample only if motion present.
+        if maxMovement > .08:
             self._resample()
 
     def elapse_time(self):
@@ -40,6 +54,7 @@ class ParticleFilter:
         # TODO: random particles
         self.particles += uniform(-self.ss, self.ss, self.particles.shape)                  # Uniform step motion model
         self.particles = self.particles.clip(zeros(2), array(self.bounds)-1).astype(int)    # Clip out-of-bounds particles
+        self.plot.tick()
 
     def _resample(self):
         indices = []

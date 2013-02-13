@@ -14,8 +14,8 @@ class SimplePlot:
         self.win = pg.GraphicsWindow(title="Plotter")
         self.win.resize(800,600)
         self.plot = self.win.addPlot(title="Plot")
-        self.plot.enableAutoRange('y', False)
-        self.plot.setYRange(-math.pow(10,7), math.pow(10,7))
+        self.plot.enableAutoRange('y', True)
+        #self.plot.setYRange(-math.pow(10,7), math.pow(10,7))
         self.curve = self.plot.plot(pen='y')
         self.values = np.array([])
 
