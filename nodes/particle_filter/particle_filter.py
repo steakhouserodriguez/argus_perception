@@ -11,6 +11,8 @@ import sys
 sys.path.append("..")
 from plotter import *
 
+PLOT = False
+
 class ParticleFilter:
     # TODO: Generic transition and emission models
 
@@ -26,27 +28,45 @@ class ParticleFilter:
         self.w = ones(num_particles)/num_particles
         self.ss = stepsize
         self.bounds = bounds
-        self.plot = SimplePlot()
+        if PLOT:
+            self.plot = SimplePlot()
+            self.varianceHistory = np.array([])
 
     def observe(self, observation):
         # TODO: better emission model
 
         # Weight = frame difference, directly from pipeline
-        self.w = observation[tuple(self.particles.T)]
+        self.w = observation[tuple(self.particles.T)]**1
+        #print self.particles.shape
 
-        maxMovement = amax(observation)
+        #print var(self.particles, axis=0)
 
         # Normalize w
         self.w /= sum(self.w)
 
-        # plots the max movement
-        self.plot.addPoint(maxMovement)
-        # TODO: better resampling condition.
-        # This ignores the situation where the bird is in motion
-        # but the particles aren't converged on the bird.
+        if PLOT:
+            #maxMovement = amax(observation)
+
+            variance = var(self.particles, axis=0)[0] + var(self.particles, axis=0)[1]
+            #print self.varianceHistory
+            self.varianceHistory = append(self.varianceHistory, variance)
+            if (self.varianceHistory.size > 50):
+                self.varianceHistory = delete(self.varianceHistory, 0)
+
+            # plots the max movement
+            #self.plot.addPoint(average(self.varianceHistory))
+            self.plot.addPoint(variance)
+# TODO: better resampling condition.
+# This ignores the situation where the bird is in motion
+# but the particles aren't converged on the bird.
 
         # Resample only if motion present.
-        if maxMovement > .08:
+        #if maxMovement > .08:
+        #self._resample()
+        #print self.w
+
+        if 1./sum(self.w**2) < self.num_particles/5.:
+            print "resampling"
             self._resample()
 
     def elapse_time(self):
@@ -54,7 +74,8 @@ class ParticleFilter:
         # TODO: random particles
         self.particles += uniform(-self.ss, self.ss, self.particles.shape)                  # Uniform step motion model
         self.particles = self.particles.clip(zeros(2), array(self.bounds)-1).astype(int)    # Clip out-of-bounds particles
-        self.plot.tick()
+        if PLOT:
+            self.plot.tick()
 
     def _resample(self):
         indices = []

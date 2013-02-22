@@ -68,23 +68,19 @@ if __name__ == '__main__':
         retval, frame = cap.read()
         #print "type of frame: " + str(type(frame[0][0]))
         grayFrame = frame.copy()
-        grayFrame = cv2.cvtColor(grayFrame, cv2.COLOR_RGB2GRAY, grayFrame, 32)
-        print "type:" + str(type(grayFrame))
-        print "grayFrame dtype:" + str(grayFrame.dtype)
+        grayFrame = cv2.cvtColor(grayFrame, cv2.COLOR_RGB2GRAY, grayFrame)
 
         grayFrame = cv2.GaussianBlur(grayFrame, (9,9), 0)
-        grayFrame = grayFrame / 255
+        grayFrame = grayFrame / 255.0
         #grayFrame = grayFrame / 128.0
-        print "grayFrame dtype:" + str(grayFrame.dtype)
-
 
         difference = grayFrame - oldframe
-        print "difference dtype:" + str(difference.dtype)
         #difference.dtype = np.float32
 
         thresholded = difference.copy()
 
-        #cv2.threshold(grayFrame, threshVal, 1, cv2.THRESH_BINARY, thresholded)
+        #thresholded = thresholded.astype(float32)
+        cv2.threshold(grayFrame, threshVal, 1, cv2.THRESH_BINARY, thresholded)
 
 
         #print "Difference value: " + str(difference.sum())
