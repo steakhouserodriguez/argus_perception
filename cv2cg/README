@@ -1,0 +1,22 @@
+				cv2cg mini-version for apriltag
+A lightweight library for computer vision and computer graphics interactions.
+
+1. Download Source
+	hg clone https://simba.forrest@code.google.com/p/cv2cg#apriltag apriltag
+	cd apriltag
+
+2. Compile
+
+	2.1 Install Dependency Libraries and Tools
+		OpenCV >=2.2
+		CMake >=2.8
+		
+	2.2 CMake+make in ubuntu (similarly in windows by CMake+VS2008)
+	mkdir build
+	cd build
+	cmake ..
+	make
+	sudo make install
+	
+3. Usage
+	AprilTagFinder camera://0

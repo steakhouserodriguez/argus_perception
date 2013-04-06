@@ -1,0 +1,3 @@
+/home/linaro/ajc/cv2cg/build/application/AprilTagCreator/CMakeFiles/AprilTagCreator.dir
+/home/linaro/ajc/cv2cg/build/application/AprilTagFinder/CMakeFiles/AprilTagFinder.dir
+/home/linaro/ajc/cv2cg/build/CMakeFiles/uninstall.dir
